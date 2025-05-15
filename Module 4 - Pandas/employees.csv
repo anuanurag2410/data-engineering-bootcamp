@@ -1,0 +1,9 @@
+employee_id,name,department,salary,join_date,email
+101,Alice,HR,50000.0,2021-01-15,alice@company.com
+102,Bob,IT,62000.0,2020-12-01,bob@company.com
+103,Charlie,IT,,not_a_date,charlie@company.com
+104,David,Finance,45000.0,2021/04/12,david@company.com
+105,Eva,Finance,800000.0,2021-11-30,
+106,Frank,HR,51000.0,,frank@company.com
+107,,IT,63000.0,2022-01-01,grace@company.com
+108,Hannah,,47000.0,2022-02-10,hannah@company.com
