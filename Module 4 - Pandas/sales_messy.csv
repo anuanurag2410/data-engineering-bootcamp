@@ -1,0 +1,51 @@
+order_id,customer_name,product,amount,date
+1001,Bob,Mouse ,,2021-04-13
+1002,Alice, monitor,,15-12-2021
+1003,Eve, keyboard,,2021/09/28
+1004,David,Laptop ,,not_a_date
+1005,David, phone,,17-04-2021
+1006,Charlie, keyboard,,13-03-2021
+1007,Bob,Mouse ,,not_a_date
+1008,Ivy,Laptop ,,08-07-2021
+1009,Bob, keyboard,,not_a_date
+1010,Jack,Laptop ,26691.16,not_a_date
+1011,Grace, charger ,,21-01-2021
+1012,Alice,Mouse ,,2021-04-13
+1013,Alice, webcam,34244.66,2021-05-02
+1014,Bob, monitor,37668.45,not_a_date
+1015,David, headphones ,,2021/08/03
+1016,David, monitor,,not_a_date
+1017,Ivy, monitor,660.64,not_a_date
+1018,Jack, keyboard,,not_a_date
+1019,Alice,Mouse ,,2021-11-27
+1020,Ivy,Laptop ,,2021-03-29
+1021,David, headphones ,,2021-04-10
+1022,Ivy, tablet ,42162.63,not_a_date
+1023,Grace, keyboard,,2021/12/26
+1024,David, headphones ,,2021-06-01
+1025,Helen, webcam,27199.26,11-05-2021
+1026,Jack, charger ,45965.43,30-05-2021
+1027,Eve,Mouse ,,05-11-2021
+1028,Alice, tablet ,,not_a_date
+1029,Charlie, keyboard,,15-09-2021
+1030,Grace, monitor,,not_a_date
+1031,Frank, phone,,10-12-2021
+1032,Eve, keyboard,,2021/10/21
+1033,Charlie, phone,40893.15,not_a_date
+1034,David, monitor,,11-07-2021
+1035,Frank, charger ,33157.67,2021-10-04
+1036,Bob,Mouse ,8673.78,not_a_date
+1037,Bob,Laptop ,,2021-06-10
+1038,Grace, keyboard,48235.96,2021-11-10
+1039,Bob, monitor,37885.63,2021-01-22
+1040,Frank, keyboard,,2021-09-10
+1041,Frank, webcam,20250.12,24-08-2021
+1042,Jack, charger ,,11-12-2021
+1043,Eve, webcam,,not_a_date
+1044,Alice, headphones ,,not_a_date
+1045,Helen,Mouse ,,not_a_date
+1046,Ivy, headphones ,,18-02-2021
+1047,Bob, keyboard,,not_a_date
+1048,Grace, tablet ,4014.16,2021-02-28
+1049,Bob, tablet ,,19-06-2021
+1050,Ivy,Mouse ,,not_a_date
