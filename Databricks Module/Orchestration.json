@@ -1,0 +1,127 @@
+{
+  "name": "Simple Orchestration",
+  "email_notifications": {
+    "no_alert_for_skipped_runs": false
+  },
+  "webhook_notifications": {},
+  "timeout_seconds": 0,
+  "max_concurrent_runs": 1,
+  "tasks": [
+    {
+      "task_key": "Catalog_Define",
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/anuanurag2410@gmail.com/data-engineering-bootcamp/Databricks Module/UC Catalog Define",
+        "source": "WORKSPACE"
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {
+        "on_start": [
+          "beaprogrammer24@gmail.com"
+        ],
+        "on_success": [
+          "beaprogrammer24@gmail.com"
+        ],
+        "on_failure": [
+          "beaprogrammer24@gmail.com"
+        ]
+      },
+      "notification_settings": {
+        "no_alert_for_skipped_runs": false,
+        "no_alert_for_canceled_runs": false,
+        "alert_on_last_attempt": false
+      },
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "BRONZE_LAYER_INGESTION",
+      "depends_on": [
+        {
+          "task_key": "Catalog_Define"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/anuanurag2410@gmail.com/data-engineering-bootcamp/Databricks Module/Bronze_Ingest",
+        "source": "WORKSPACE"
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "SILVER_LAYER_INGESTION",
+      "depends_on": [
+        {
+          "task_key": "BRONZE_LAYER_INGESTION"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/anuanurag2410@gmail.com/data-engineering-bootcamp/Databricks Module/Silver_Ingest",
+        "source": "WORKSPACE"
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "Gold_LAYER_INGESTION",
+      "depends_on": [
+        {
+          "task_key": "SILVER_LAYER_INGESTION"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/anuanurag2410@gmail.com/data-engineering-bootcamp/Databricks Module/Golden_Ingest",
+        "source": "WORKSPACE"
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    }
+  ],
+  "git_source": {
+    "git_url": "https://github.com/anuanurag2410/data-engineering-bootcamp.git",
+    "git_provider": "gitHub",
+    "git_branch": "main"
+  },
+  "queue": {
+    "enabled": true
+  },
+  "parameters": [
+    {
+      "name": "catalog",
+      "default": "DATAX"
+    },
+    {
+      "name": "schema",
+      "default": "DataEngineering"
+    },
+    {
+      "name": "source_path",
+      "default": "/Volumes/datax/dataengineering/raw_json/orders/"
+    },
+    {
+      "name": "bronze_table",
+      "default": "datax.dataengineering.bronze_orders"
+    },
+    {
+      "name": "volume",
+      "default": "RAW_JSON"
+    },
+    {
+      "name": "silver_table",
+      "default": "datax.dataengineering.silver_orders"
+    },
+    {
+      "name": "gold_table",
+      "default": "datax.dataengineering.gold_orders"
+    }
+  ],
+  "performance_target": "PERFORMANCE_OPTIMIZED",
+  "run_as": {
+    "user_name": "anuanurag2410@gmail.com"
+  }
+}
