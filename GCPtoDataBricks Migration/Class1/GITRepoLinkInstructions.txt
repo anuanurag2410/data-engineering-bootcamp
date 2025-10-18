@@ -1,0 +1,91 @@
+🚀 BigQuery ↔ GitHub Integration (SSH Method)
+
+End-to-end setup from SSH key generation → GitHub auth → GCP Secret → BigQuery Repository link.
+
+🧩 0️⃣ Set these variables first
+# === 📝 Replace these values ===
+export GITHUB_USER="<your-github-username>"              # e.g. anuanurag2410
+export GITHUB_REPO="<your-github-repo-name>"             # e.g. data-engineering-bootcamp
+export GCP_PROJECT_ID="<your-gcp-project-id>"            # e.g. datamigrationproject-475415
+export SECRET_NAME="<your-secret-name>"                  # e.g. bq-git-ssh-ed25519
+# =================================
+
+🔐 1️⃣ Generate a new SSH key on your Mac
+# Create secure folder
+mkdir -p ~/.ssh && chmod 700 ~/.ssh
+
+# Generate a new key pair (press Enter to skip passphrase)
+ssh-keygen -t ed25519 -C "${GITHUB_USER}@users.noreply.github.com" -f ~/.ssh/id_ed25519
+
+# Start ssh-agent and add the private key
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+
+# Fix permissions
+chmod 600 ~/.ssh/id_ed25519
+chmod 644 ~/.ssh/id_ed25519.pub
+
+🔑 2️⃣ Add the public key to GitHub
+pbcopy < ~/.ssh/id_ed25519.pub
+echo "✅ Public key copied to clipboard — now go to GitHub → Settings → SSH and GPG keys → New SSH key → Paste and Save."
+
+
+Then test:
+
+ssh -T git@github.com
+# You should see: "Hi <your-github-username>! You've successfully authenticated..."
+
+💻 3️⃣ (Optional) Convert your local repo to SSH
+cd /path/to/your/local/clone
+git remote set-url origin git@github.com:${GITHUB_USER}/${GITHUB_REPO}.git
+git pull
+
+☁️ 4️⃣ Enable GCP APIs
+gcloud config set project "${GCP_PROJECT_ID}"
+gcloud services enable bigquery.googleapis.com dataform.googleapis.com secretmanager.googleapis.com
+
+🗝️ 5️⃣ Create Secret Manager entry for your private key
+# Create secret
+gcloud secrets create "${SECRET_NAME}" --replication-policy="automatic"
+
+# Add your PRIVATE key (not .pub!)
+gcloud secrets versions add "${SECRET_NAME}" --data-file="$HOME/.ssh/id_ed25519"
+
+# Allow Dataform service agent to read it
+export GCP_PROJECT_NUMBER="$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(projectNumber)')"
+export DATAFORM_SA="service-${GCP_PROJECT_NUMBER}@gcp-sa-dataform.iam.gserviceaccount.com"
+
+gcloud secrets add-iam-policy-binding "${SECRET_NAME}" \
+  --member="serviceAccount:${DATAFORM_SA}" \
+  --role="roles/secretmanager.secretAccessor"
+
+🌍 6️⃣ Get GitHub’s host key
+
+Run this and copy the line starting with ecdsa-sha2-nistp256 (no hostname):
+
+ssh-keyscan -t ecdsa github.com | awk '{print $2" "$3}' | head -n1
+
+🧠 7️⃣ Connect repo in BigQuery Repositories UI
+
+Go to BigQuery → Repositories → your repo → Configuration → Connect with Git
+
+Fill like this 👇
+
+Field	Value
+Protocol	SSH
+Remote Git repository URL	git@github.com:<your-github-username>/<your-github-repo-name>.git
+Default remote branch	main (or your default)
+Secret	Select <your-secret-name> you created
+SSH public host key value	Paste the output from the ssh-keyscan command (e.g., ecdsa-sha2-nistp256 AAAA...) — no hostname!
+✅	Click Connect
+🧾 8️⃣ Verify
+
+Try a Commit & Push in BigQuery.
+Then check GitHub — your new commit should appear in your repo 🎉
+
+⚡ Troubleshooting
+Issue	Fix
+❌ host public key didn’t match	Re-run the ssh-keyscan command and paste the fresh line again
+❌ access token ... was rejected	You accidentally used an HTTPS URL — switch to SSH URL (git@github.com:...)
+❌ permission denied (publickey)	Make sure you added your public key in GitHub with write access
+❌ secret access denied	Re-run the add-iam-policy-binding step for the same secret
