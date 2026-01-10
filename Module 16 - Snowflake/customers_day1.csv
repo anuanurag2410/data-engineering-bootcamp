@@ -1,0 +1,5 @@
+customer_id,customer_name,email,city,updated_at
+C001,Ananya Sharma,ananya@gmail.com,Bangalore,2026-01-05 09:00:00
+C002,Rahul Verma,rahul@gmail.com,Pune,2026-01-05 09:00:00
+C003,Meera Iyer,meera@gmail.com,Chennai,2026-01-05 09:00:00
+C004,Arjun Singh,arjun@gmail.com,Delhi,2026-01-05 09:00:00
