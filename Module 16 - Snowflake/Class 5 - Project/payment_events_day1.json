@@ -1,0 +1,5 @@
+[
+{"event_id":"E9001","order_id":2001,"event_ts":"2026-01-10 10:06:10","event_type":"PAYMENT_SUCCESS","amount":240,"method":"UPI","meta":{"gateway":"Razorpay","bank":"HDFC"}},
+{"event_id":"E9002","order_id":2002,"event_ts":"2026-01-10 10:08:05","event_type":"PAYMENT_SUCCESS","amount":250,"method":"CARD","meta":{"gateway":"Stripe","bank":"ICICI"}},
+{"event_id":"E9003","order_id":2003,"event_ts":"2026-01-10 10:11:00","event_type":"PAYMENT_FAILED","amount":0,"method":"UPI","meta":{"gateway":"Razorpay","reason":"Insufficient funds"}}
+]

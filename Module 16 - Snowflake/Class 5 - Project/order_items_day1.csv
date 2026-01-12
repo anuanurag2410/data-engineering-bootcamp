@@ -1,0 +1,6 @@
+order_id,item_id,item_name,qty,price
+2001,I11,Burger,1,120
+2001,I12,Fries,2,60
+2002,I13,Pizza,1,250
+2004,I14,Cold Coffee,2,90
+2004,I15,Brownie,1,110

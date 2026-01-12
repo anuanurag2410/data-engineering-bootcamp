@@ -1,0 +1,5 @@
+order_id,customer_id,order_ts,city,order_status
+2001,U001,2026-01-10 10:05:00,Bangalore,PLACED
+2002,U002,2026-01-10 10:07:00,Pune,PLACED
+2003,U003,2026-01-10 10:10:00,Delhi,CANCELLED
+2004,U001,2026-01-10 10:15:00,Bangalore,PLACED
