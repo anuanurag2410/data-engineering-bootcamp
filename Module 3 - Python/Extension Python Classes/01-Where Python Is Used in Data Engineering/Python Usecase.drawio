@@ -1,0 +1,40 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="Mmfl_Sguh9eKat5otAjo">
+    <mxGraphModel dx="1406" dy="742" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="0PkQSEVbbpXbn2eECGTg-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="" vertex="1">
+          <mxGeometry height="700" width="330" x="220" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="0PkQSEVbbpXbn2eECGTg-3" edge="1" parent="1" source="0PkQSEVbbpXbn2eECGTg-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="0PkQSEVbbpXbn2eECGTg-2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0PkQSEVbbpXbn2eECGTg-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=19;" value="Source System" vertex="1">
+          <mxGeometry height="90" width="240" x="270" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="0PkQSEVbbpXbn2eECGTg-5" edge="1" parent="1" source="0PkQSEVbbpXbn2eECGTg-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="0PkQSEVbbpXbn2eECGTg-4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0PkQSEVbbpXbn2eECGTg-2" parent="1" style="whiteSpace=wrap;html=1;fontSize=19;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=0;fontStyle=1;" value="Extract Data" vertex="1">
+          <mxGeometry height="130" width="230" x="275" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="0PkQSEVbbpXbn2eECGTg-7" edge="1" parent="1" source="0PkQSEVbbpXbn2eECGTg-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="0PkQSEVbbpXbn2eECGTg-6" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0PkQSEVbbpXbn2eECGTg-4" parent="1" style="whiteSpace=wrap;html=1;fontSize=19;fillColor=#f8cecc;strokeColor=#b85450;rounded=0;fontStyle=1;" value="Validate Data" vertex="1">
+          <mxGeometry height="90" width="210" x="285" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="0PkQSEVbbpXbn2eECGTg-9" edge="1" parent="1" source="0PkQSEVbbpXbn2eECGTg-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="0PkQSEVbbpXbn2eECGTg-8" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0PkQSEVbbpXbn2eECGTg-6" parent="1" style="whiteSpace=wrap;html=1;fontSize=19;fillColor=#d5e8d4;strokeColor=#82b366;rounded=0;fontStyle=1;" value="Transform Data" vertex="1">
+          <mxGeometry height="85" width="180" x="300" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="0PkQSEVbbpXbn2eECGTg-8" parent="1" style="whiteSpace=wrap;html=1;fontSize=19;fillColor=#f8cecc;strokeColor=#b85450;rounded=0;fontStyle=1;" value="Load Data" vertex="1">
+          <mxGeometry height="60" width="120" x="330" y="620" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
