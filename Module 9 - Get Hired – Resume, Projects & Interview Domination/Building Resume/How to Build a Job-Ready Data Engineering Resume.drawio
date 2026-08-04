@@ -1,0 +1,13 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="AJHYH0cnpwcta9DM4niJ">
+    <mxGraphModel dx="1471" dy="832" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="H-yaU3VTUzVcUJc81ubV-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=#d6b656;fillColor=#fff2cc;align=center;verticalAlign=middle;rounded=0;" value="&lt;span id=&quot;docs-internal-guid-318fd640-7fff-e975-e5fa-d4394f64c835&quot;&gt;&lt;span style=&quot;font-size: 23pt; font-family: Arial, sans-serif; background-color: transparent; font-weight: 700; font-variant: normal; vertical-align: baseline; white-space: pre-wrap;&quot;&gt;How to Build a Job-Ready Data Engineering Resume&lt;/span&gt;&lt;/span&gt;" vertex="1">
+          <mxGeometry height="100" width="490" x="210" y="120" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
