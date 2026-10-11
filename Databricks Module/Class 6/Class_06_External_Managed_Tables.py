@@ -60,7 +60,11 @@ print(managed_location)
 
 # COMMAND ----------
 
-orders_df=spark.read.format("delta").table("dataxdev_7405605479358410.default.orders_delta")
+orders_df=spark.read.format("delta").load("/Volumes/dataxdevelopment/default/delta_datax")
+
+# COMMAND ----------
+
+orders_df=spark.read.format("delta").table("dataxdevelopment.default.orders_delta")
 display(orders_df)
 
 # COMMAND ----------
@@ -138,16 +142,31 @@ display(dbutils.fs.ls(path))
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC DROP  TABLE datax_db.orders_external 
-
-# COMMAND ----------
-
-# MAGIC %sql
 # MAGIC CREATE TABLE datax_db.orders_external 
 # MAGIC USING DELTA 
-# MAGIC LOCATION 'abfss://dev-datax@dataxazure.dfs.core.windows.net/landing/Sample/'
+# MAGIC LOCATION 'abfss://dev-datax@dataxazure.dfs.core.windows.net/landing_v2/processed_orders/'
 
 # COMMAND ----------
 
 # MAGIC %sql
 # MAGIC DESCRIBE EXTENDED datax_db.orders_external 
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC # When Does managed table makes sense?
+# MAGIC
+# MAGIC - Databricks owns/manages the table lifecycle 
+# MAGIC - We don't need independent management of the physical data location.
+# MAGIC - We want simpler table management.
+# MAGIC
+# MAGIC
+# MAGIC # When Does External table makes sense?
+# MAGIC
+# MAGIC - Data already exists at a controlled storage location
+# MAGIC - Storage lifecyle must remain independent
+# MAGIC - organization wants explicit control over where data resides.
+# MAGIC
+
+# COMMAND ----------
+

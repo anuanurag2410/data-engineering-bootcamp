@@ -1,5 +1,9 @@
 # Databricks notebook source
-orders_df=spark.read.format("delta").load("/Volumes/dataxdev_7405605479358410/default/delta_datax")
+# /// script
+# [tool.databricks.environment]
+# environment_version = "6"
+# ///
+orders_df=spark.read.format("delta").load("/Volumes/dataxdevelopment/default/delta_datax")
 
 # COMMAND ----------
 
@@ -101,10 +105,6 @@ orders_df.write.saveAsTable("orders")
 
 # MAGIC %sql
 # MAGIC Select * from orders
-
-# COMMAND ----------
-
-
 
 # COMMAND ----------
 
