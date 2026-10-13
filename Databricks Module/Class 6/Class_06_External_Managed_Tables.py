@@ -60,11 +60,11 @@ print(managed_location)
 
 # COMMAND ----------
 
-orders_df=spark.read.format("delta").load("/Volumes/dataxdevelopment/default/delta_datax")
+orders_df=spark.read.format("delta").load("/Volumes/dataxdevelopment_7405608929107032/default/delta_datax")
 
 # COMMAND ----------
 
-orders_df=spark.read.format("delta").table("dataxdevelopment.default.orders_delta")
+orders_df=spark.read.format("delta").table("dataxdevelopment_7405608929107032.default.orders_delta")
 display(orders_df)
 
 # COMMAND ----------
@@ -117,8 +117,7 @@ display(orders_df)
 
 # External location V2
 orders_path = (
-    "abfss://dev-datax@dataxazure.dfs.core.windows.net/"
-    "landing_v2/processed_orders/"
+    "abfss://dev-datax@dataxazure.dfs.core.windows.net/landing/processed_orders/Sample/"
 )
 
 # Write orders DataFrame as Delta
@@ -144,7 +143,7 @@ display(dbutils.fs.ls(path))
 # MAGIC %sql
 # MAGIC CREATE TABLE datax_db.orders_external 
 # MAGIC USING DELTA 
-# MAGIC LOCATION 'abfss://dev-datax@dataxazure.dfs.core.windows.net/landing_v2/processed_orders/'
+# MAGIC LOCATION 'abfss://dev-datax@dataxazure.dfs.core.windows.net/landing/processed_orders/Sample/'
 
 # COMMAND ----------
 

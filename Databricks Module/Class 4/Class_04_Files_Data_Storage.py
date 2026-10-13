@@ -104,7 +104,7 @@ orders_df.select("order_id","customer_id","order_status").show()
 
 # COMMAND ----------
 
-parquet_path='/Volumes/dataxdevelopment/default/datax'
+parquet_path='/Volumes/dataxdevelopment_7405608929107032/default/datax'
 
 
 orders_df.write \
@@ -114,7 +114,7 @@ orders_df.write \
 
 # COMMAND ----------
 
-parquet_df=spark.read.parquet("/Volumes/dataxdevelopment/default/datax")
+parquet_df=spark.read.parquet("/Volumes/dataxdevelopment_7405608929107032/default/datax")
 parquet_df.show()
 
 # COMMAND ----------
@@ -141,7 +141,7 @@ parquet_df.show()
 
 # COMMAND ----------
 
-delta_path="/Volumes/dataxdevelopment/default/delta_datax"
+delta_path="/Volumes/dataxdevelopment_7405608929107032/default/delta_datax"
 orders_df.write.format("delta").mode('overwrite').save(delta_path)
 orders_df.write.format("delta").mode('overwrite').saveAsTable('default.orders_delta')
 

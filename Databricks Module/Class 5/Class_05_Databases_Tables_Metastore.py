@@ -3,7 +3,7 @@
 # [tool.databricks.environment]
 # environment_version = "6"
 # ///
-orders_df=spark.read.format("delta").load("/Volumes/dataxdevelopment/default/delta_datax")
+orders_df=spark.read.format("delta").load("/Volumes/dataxdevelopment_7405608929107032/default/delta_datax")
 
 # COMMAND ----------
 
