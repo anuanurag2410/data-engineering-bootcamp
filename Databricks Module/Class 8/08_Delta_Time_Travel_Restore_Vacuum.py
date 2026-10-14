@@ -86,7 +86,7 @@
 
 
 df = spark.table("datax_db.orders_time_travel_demo")
-df.write.format("delta").mode("overwrite").save("/Volumes/dataxdevelopment_7405608929107032/default/delta_datax")
+df.write.format("delta").mode("overwrite").save("/Volumes/dataxdevelopment_7405619193321738/default/delta_datax")
 
 # COMMAND ----------
 
@@ -142,7 +142,4 @@ df.write.format("delta").mode("overwrite").save("/Volumes/dataxdevelopment_74056
 
 
 df = spark.table("datax_db.orders_time_travel_demo")
-df.write.format("delta").mode("overwrite").save("/Volumes/dataxdevelopment_7405608929107032/default/delta_datax")
-
-# COMMAND ----------
-
+df.write.format("delta").mode("overwrite").save("/Volumes/dataxdevelopment_7405619193321738/default/delta_datax")

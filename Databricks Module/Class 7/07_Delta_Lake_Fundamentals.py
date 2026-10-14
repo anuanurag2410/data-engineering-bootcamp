@@ -75,12 +75,11 @@ print(table_path)
 # COMMAND ----------
 
 df = spark.table("datax_db.orders")
-df.write.format("delta").mode("overwrite").save("/Volumes/dataxdevelopment_7405608929107032/default/delta_datax")
+df.write.format("delta").mode("overwrite").save("/Volumes/dataxdevelopment_7405619193321738/default/delta_datax")
 
 # COMMAND ----------
 
 # MAGIC %sql 
-# MAGIC
 # MAGIC RESTORE TABLE datax_db.orders VERSION AS OF 0
 
 # COMMAND ----------
@@ -127,22 +126,4 @@ df.write.format("delta").mode("overwrite").save("/Volumes/dataxdevelopment_74056
 # MAGIC
 # MAGIC
 # MAGIC
-# MAGIC
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC
-
-# COMMAND ----------
-
-
-
-# COMMAND ----------
-
-
-
-# COMMAND ----------
-
-# MAGIC %md
 # MAGIC
