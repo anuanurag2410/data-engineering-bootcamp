@@ -8,6 +8,18 @@
 
 # COMMAND ----------
 
+# DBTITLE 1,Parameters: Unity Catalog
+# Unity Catalog name is passed as a parameter from the calling notebook
+# e.g. dbutils.notebook.run("Class_06_External_Managed_Tables", 0, {"catalog": "<catalog_name>"})
+dbutils.widgets.text("catalog", "dataxdev", "Unity Catalog")
+catalog = dbutils.widgets.get("catalog")
+if not catalog:
+    raise ValueError("Parameter 'catalog' is required")
+spark.sql(f"USE CATALOG `{catalog}`")  # unqualified names like datax_db.orders resolve in this catalog
+print(f"Using catalog: {catalog}")
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC **Managed Table and External**
 # MAGIC
@@ -60,11 +72,11 @@ print(managed_location)
 
 # COMMAND ----------
 
-orders_df=spark.read.format("delta").load("/Volumes/dataxdevelopment_7405619193321738/default/delta_datax")
+orders_df=spark.read.format("delta").load(f"/Volumes/{catalog}/default/delta_datax")
 
 # COMMAND ----------
 
-orders_df=spark.read.format("delta").table("dataxdevelopment_7405619193321738.default.orders_delta")
+orders_df=spark.read.format("delta").table(f"{catalog}.default.orders_delta")
 display(orders_df)
 
 # COMMAND ----------
@@ -144,7 +156,7 @@ display(dbutils.fs.ls(path))
 # MAGIC %sql
 # MAGIC CREATE TABLE datax_db.orders_external 
 # MAGIC USING DELTA 
-# MAGIC LOCATION 'abfss://dev-datax@dataxazure.dfs.core.windows.net/landing/processed_orders/Sample/'
+# MAGIC LOCATION 'abfss://dev-datax@dataxazure.dfs.core.windows.net/${current_timestamp()}/landing//processed_orders/'
 
 # COMMAND ----------
 

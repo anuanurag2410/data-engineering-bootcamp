@@ -8,6 +8,19 @@
 
 # COMMAND ----------
 
+# DBTITLE 1,Parameters: Unity Catalog
+# Unity Catalog name is passed as a parameter from the calling notebook
+# e.g. dbutils.notebook.run("11_Unity_Catalog_Volumes", 0, {"catalog": "<catalog_name>"})
+# SQL cells reference it as :catalog via IDENTIFIER()
+dbutils.widgets.text("catalog", "dataxdev", "Unity Catalog")
+catalog = dbutils.widgets.get("catalog")
+if not catalog:
+    raise ValueError("Parameter 'catalog' is required")
+spark.sql(f"USE CATALOG `{catalog}`")
+print(f"Using catalog: {catalog}")
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC # What is unity Catalog Volume
 # MAGIC
@@ -66,8 +79,12 @@
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC CREATE VOLUME IF NOT EXISTS 
-# MAGIC dataxdevelopment_7405619193321738.bronze.orders_files;
+# MAGIC CREATE DATABASE IF NOT EXISTS bronze
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC CREATE VOLUME IF NOT EXISTS bronze.orders_files
 
 # COMMAND ----------
 
@@ -75,17 +92,17 @@
 order_df = spark.read.option("header", "true").option("inferSchema", "true").csv("/Workspace/Users/anuanurag2410@gmail.com/data-engineering-bootcamp/Databricks Module/Class 4/orders.csv")
 
 # Write to Unity Catalog Volume
-order_df.coalesce(1).write.mode("overwrite").option("header", "true").csv("/Volumes/dataxdevelopment_7405619193321738/bronze/orders_files")
+order_df.coalesce(1).write.mode("overwrite").option("header", "true").format("csv").save(f"/Volumes/{catalog}/bronze/orders_files")
 
-print("CSV file successfully written to Volume: dataxdevelopment_7405619193321738.bronze.order_files")
+print(f"CSV file successfully written to Volume: {catalog}.bronze.orders_files")
 
 # COMMAND ----------
 
 # DBTITLE 1,Read the parquet from teh table
-order_files_path="/Volumes/dataxdevelopment_7405619193321738/bronze/orders_files"
+order_files_path=f"/Volumes/{catalog}/bronze/orders_files"
 
 order_df=spark.read.option("header", "true").option("inferSchema", "true").csv(order_files_path)
-order_df.write.mode("overwrite").saveAsTable("dataxdevelopment_7405619193321738.bronze.order_files")
+order_df.write.mode("overwrite").saveAsTable(f"{catalog}.bronze.order_files")
 
 # COMMAND ----------
 
@@ -100,7 +117,7 @@ display(order_df.filter(col("order_id").isNull()| col("customer_id").isNull() | 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC Select * from dataxdevelopment_7405619193321738.bronze.order_files
+# MAGIC Select * from IDENTIFIER(:catalog || '.bronze.order_files')
 
 # COMMAND ----------
 

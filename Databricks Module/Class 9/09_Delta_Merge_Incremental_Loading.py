@@ -5,6 +5,18 @@
 
 # COMMAND ----------
 
+# DBTITLE 1,Parameters: Unity Catalog
+# Unity Catalog name is passed as a parameter from the calling notebook
+# e.g. dbutils.notebook.run("09_Delta_Merge_Incremental_Loading", 0, {"catalog": "<catalog_name>"})
+dbutils.widgets.text("catalog", "", "Unity Catalog")
+catalog = dbutils.widgets.get("catalog")
+if not catalog:
+    raise ValueError("Parameter 'catalog' is required")
+spark.sql(f"USE CATALOG `{catalog}`")  # unqualified names like datax_db.orders resolve in this catalog
+print(f"Using catalog: {catalog}")
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ## FULL LOAD VS INCREMENTAL LOAD
 # MAGIC

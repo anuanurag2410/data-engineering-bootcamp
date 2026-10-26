@@ -3,7 +3,19 @@
 # [tool.databricks.environment]
 # environment_version = "6"
 # ///
-orders_df=spark.read.format("delta").load("/Volumes/dataxdevelopment_7405619193321738/default/delta_datax")
+# DBTITLE 1,Parameters: Unity Catalog
+# Unity Catalog name is passed as a parameter from the calling notebook
+# e.g. dbutils.notebook.run("Class_05_Databases_Tables_Metastore", 0, {"catalog": "<catalog_name>"})
+dbutils.widgets.text("catalog", "", "Unity Catalog")
+catalog = dbutils.widgets.get("catalog")
+if not catalog:
+    raise ValueError("Parameter 'catalog' is required")
+spark.sql(f"USE CATALOG `{catalog}`")  # unqualified names like datax_db.orders resolve in this catalog
+print(f"Using catalog: {catalog}")
+
+# COMMAND ----------
+
+orders_df=spark.read.format("delta").load(f"/Volumes/{catalog}/default/delta_datax")
 
 # COMMAND ----------
 

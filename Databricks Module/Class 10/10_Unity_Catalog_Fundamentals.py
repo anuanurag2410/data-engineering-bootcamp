@@ -5,6 +5,19 @@
 
 # COMMAND ----------
 
+# DBTITLE 1,Parameters: Unity Catalog
+# Unity Catalog name is passed as a parameter from the calling notebook
+# e.g. dbutils.notebook.run("10_Unity_Catalog_Fundamentals", 0, {"catalog": "<catalog_name>"})
+# SQL cells reference it as :catalog via IDENTIFIER()
+dbutils.widgets.text("catalog", "", "Unity Catalog")
+catalog = dbutils.widgets.get("catalog")
+if not catalog:
+    raise ValueError("Parameter 'catalog' is required")
+spark.sql(f"USE CATALOG `{catalog}`")
+print(f"Using catalog: {catalog}")
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC # What is Unity Catalog? 
 # MAGIC
@@ -56,21 +69,21 @@
 # COMMAND ----------
 
 # MAGIC %sql 
-# MAGIC CREATE SCHEMA IF NOT EXISTS dataxdevelopment_7405619193321738.bronze;
-# MAGIC CREATE SCHEMA IF NOT EXISTS dataxdevelopment_7405619193321738.silver;
-# MAGIC CREATE SCHEMA IF NOT EXISTS dataxdevelopment_7405619193321738.gold;
+# MAGIC CREATE SCHEMA IF NOT EXISTS IDENTIFIER(:catalog || '.bronze');
+# MAGIC CREATE SCHEMA IF NOT EXISTS IDENTIFIER(:catalog || '.silver');
+# MAGIC CREATE SCHEMA IF NOT EXISTS IDENTIFIER(:catalog || '.gold');
 
 # COMMAND ----------
 
 # MAGIC %sql 
-# MAGIC CREATE TABLE IF NOT EXISTS dataxdevelopment_7405619193321738.bronze.orders_uc_demo_bronze
+# MAGIC CREATE TABLE IF NOT EXISTS IDENTIFIER(:catalog || '.bronze.orders_uc_demo_bronze')
 # MAGIC AS 
-# MAGIC SELECT * FROM dataxdevelopment_7405619193321738.datax_db.orders
+# MAGIC SELECT * FROM IDENTIFIER(:catalog || '.datax_db.orders')
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC select * from dataxdevelopment_7405619193321738.bronze.orders_uc_demo_bronze
+# MAGIC select * from IDENTIFIER(:catalog || '.bronze.orders_uc_demo_bronze')
 
 # COMMAND ----------
 

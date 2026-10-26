@@ -8,29 +8,41 @@
 
 # COMMAND ----------
 
+# DBTITLE 1,Parameters: Unity Catalog
+# Unity Catalog name is passed as a parameter from the calling notebook
+# e.g. dbutils.notebook.run("08_Delta_Time_Travel_Restore_Vacuum", 0, {"catalog": "<catalog_name>"})
+dbutils.widgets.text("catalog", "dataxdev", "Unity Catalog")
+catalog = dbutils.widgets.get("catalog")
+if not catalog:
+    raise ValueError("Parameter 'catalog' is required")
+spark.sql(f"USE CATALOG `{catalog}`")  # unqualified names like ${catalog}.orders resolve in this catalog
+print(f"Using catalog: {catalog}")
+
+# COMMAND ----------
+
 # MAGIC %sql 
-# MAGIC CREATE TABLE datax_db.orders_time_travel_demo 
-# MAGIC AS SELECT * from datax_db.orders
+# MAGIC CREATE TABLE ${catalog}.${catalog}.orders_time_travel_demo 
+# MAGIC AS SELECT * from ${catalog}.${catalog}.orders
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC Describe Detail datax_db.orders_time_travel_demo
+# MAGIC Describe Detail ${catalog}.orders_time_travel_demo
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC Describe extended datax_db.orders_time_travel_demo
+# MAGIC Describe extended ${catalog}.orders_time_travel_demo
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC DESCRIBE HISTORY datax_db.orders_time_travel_demo
+# MAGIC DESCRIBE HISTORY ${catalog}.orders_time_travel_demo
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC INSERT INTO datax_db.orders_time_travel_demo
+# MAGIC INSERT INTO ${catalog}.orders_time_travel_demo
 # MAGIC (
 # MAGIC     order_id,
 # MAGIC     customer_id,
@@ -55,12 +67,12 @@
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC DESCRIBE HISTORY datax_db.orders_time_travel_demo
+# MAGIC DESCRIBE HISTORY ${catalog}.orders_time_travel_demo
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC UPDATE datax_db.orders_time_travel_demo
+# MAGIC UPDATE ${catalog}.orders_time_travel_demo
 # MAGIC SET order_status = 'COMPLETED'
 # MAGIC WHERE order_id = 1011;
 # MAGIC
@@ -68,60 +80,60 @@
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC DESCRIBE HISTORY datax_db.orders_time_travel_demo
+# MAGIC DESCRIBE HISTORY ${catalog}.orders_time_travel_demo
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC DELETE FROM datax_db.orders_time_travel_demo
+# MAGIC DELETE FROM ${catalog}.orders_time_travel_demo
 # MAGIC WHERE order_id = 1011;
 # MAGIC
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC DESCRIBE HISTORY datax_db.orders_time_travel_demo
+# MAGIC DESCRIBE HISTORY ${catalog}.orders_time_travel_demo
 
 # COMMAND ----------
 
 
-df = spark.table("datax_db.orders_time_travel_demo")
-df.write.format("delta").mode("overwrite").save("/Volumes/dataxdevelopment_7405619193321738/default/delta_datax")
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC DESCRIBE HISTORY datax_db.orders_time_travel_demo
+df = spark.table("${catalog}.orders_time_travel_demo")
+df.write.format("delta").mode("overwrite").save(f"/Volumes/{catalog}/default/delta_datax")
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC RESTORE TABLE datax_db.orders_time_travel_demo TO VERSION AS OF 0
+# MAGIC DESCRIBE HISTORY ${catalog}.orders_time_travel_demo
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC Select * from datax_db.orders_time_travel_demo
+# MAGIC RESTORE TABLE ${catalog}.orders_time_travel_demo TO VERSION AS OF 0
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC Select * from datax_db.orders_time_travel_demo version as of 5
+# MAGIC Select * from ${catalog}.orders_time_travel_demo
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC Select * from datax_db.orders_time_travel_demo version as of 1
+# MAGIC Select * from ${catalog}.orders_time_travel_demo version as of 5
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC Select * from datax_db.orders_time_travel_demo 
+# MAGIC Select * from ${catalog}.orders_time_travel_demo version as of 1
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC DESCRIBE HISTORY datax_db.orders_time_travel_demo
+# MAGIC Select * from ${catalog}.orders_time_travel_demo 
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC DESCRIBE HISTORY ${catalog}.orders_time_travel_demo
 
 # COMMAND ----------
 
@@ -134,12 +146,12 @@ df.write.format("delta").mode("overwrite").save("/Volumes/dataxdevelopment_74056
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC VACUUM datax_db.orders_time_travel_demo
+# MAGIC VACUUM ${catalog}.orders_time_travel_demo
 # MAGIC RETAIN 1 HOURS DRY RUN;
 # MAGIC
 
 # COMMAND ----------
 
 
-df = spark.table("datax_db.orders_time_travel_demo")
-df.write.format("delta").mode("overwrite").save("/Volumes/dataxdevelopment_7405619193321738/default/delta_datax")
+df = spark.table("${catalog}.orders_time_travel_demo")
+df.write.format("delta").mode("overwrite").save(f"/Volumes/{catalog}/default/delta_datax")

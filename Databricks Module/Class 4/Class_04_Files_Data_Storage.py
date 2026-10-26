@@ -8,6 +8,15 @@
 
 # COMMAND ----------
 
+# DBTITLE 1,Parameters: Unity Catalog
+# Unity Catalog name is passed as a parameter from the calling notebook
+# e.g. dbutils.notebook.run("Class_04_Files_Data_Storage", 0, {"catalog": "<catalog_name>"})
+dbutils.widgets.text("catalog", "", "Unity Catalog")
+catalog = dbutils.widgets.get("catalog")
+print(f"Using catalog: {catalog}")
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC **What is Data?**
 # MAGIC
@@ -104,8 +113,10 @@ orders_df.select("order_id","customer_id","order_status").show()
 
 # COMMAND ----------
 
-parquet_path='/Volumes/dataxdevelopment_7405619193321738/default/datax'
+parquet_path=f'/Volumes/{catalog}/default/datax'
 
+# Create the volume if it doesn't exist
+spark.sql(f"CREATE VOLUME IF NOT EXISTS {catalog}.default.datax")
 
 orders_df.write \
     .mode("overwrite") \
@@ -114,7 +125,7 @@ orders_df.write \
 
 # COMMAND ----------
 
-parquet_df=spark.read.parquet("/Volumes/dataxdevelopment_7405619193321738/default/datax")
+parquet_df=spark.read.parquet(f"/Volumes/{catalog}/default/datax")
 parquet_df.show()
 
 # COMMAND ----------
@@ -141,9 +152,10 @@ parquet_df.show()
 
 # COMMAND ----------
 
-delta_path="/Volumes/dataxdevelopment_7405619193321738/default/delta_datax"
+delta_path=f"/Volumes/{catalog}/default/delta_datax"
+spark.sql(f"CREATE VOLUME IF NOT EXISTS {catalog}.default.delta_datax")
 orders_df.write.format("delta").mode('overwrite').save(delta_path)
-orders_df.write.format("delta").mode('overwrite').saveAsTable('default.orders_delta')
+orders_df.write.format("delta").mode('overwrite').saveAsTable(f'{catalog}.default.orders_delta')
 
 # COMMAND ----------
 

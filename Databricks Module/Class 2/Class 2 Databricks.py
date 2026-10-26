@@ -21,7 +21,7 @@ print("THis is DataX Bootcamp by Anurag")
 
 # COMMAND ----------
 
-datax.dataengineering.bronze_orders
+# datax.dataengineering.bronze_orders
 
 # COMMAND ----------
 
