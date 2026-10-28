@@ -153,10 +153,15 @@ display(dbutils.fs.ls(path))
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC CREATE TABLE datax_db.orders_external 
-# MAGIC USING DELTA 
-# MAGIC LOCATION 'abfss://dev-datax@dataxazure.dfs.core.windows.net/${current_timestamp()}/landing//processed_orders/'
+from datetime import datetime
+
+timestamp = datetime.now().strftime("%Y/%m/%d/%H%M%S")
+
+spark.sql(f"""
+    CREATE TABLE datax_db.orders_external 
+    USING DELTA 
+    LOCATION 'abfss://dev-datax@dataxazure.dfs.core.windows.net/landing/processed_orders/{timestamp}/'
+""")
 
 # COMMAND ----------
 

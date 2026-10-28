@@ -9,25 +9,27 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ###Unity Catalog Tables
-# MAGIC
-# MAGIC - A unity Catalog Tables is a table registered and Goverened through unity catalog.
-# MAGIC - We can query this on Pyspark or SQL
-# MAGIC - Unity Catalog Manages your metadata and access permissions
-# MAGIC - Delta Lake Providoes the transactional capabilities we have already covered those things
-# MAGIC
-# MAGIC _There are two types of tables_
-# MAGIC
-# MAGIC 1- Managed Table
-# MAGIC
-# MAGIC 2- External Table
+# MAGIC - Unity Catalog
+# MAGIC - Unity Catalog Volumes 
+# MAGIC - Managed Volumes 
+# MAGIC - File in PySpark 
+# MAGIC - Source Data in DBX
 
 # COMMAND ----------
 
-# Unity Catalog name is passed as a parameter from the calling notebook
-# e.g. dbutils.notebook.run("11_Unity_Catalog_Volumes", 0, {"catalog": "<catalog_name>"})
-# SQL cells reference it as :catalog via IDENTIFIER()
-dbutils.widgets.text("catalog", "dataxdev", "Unity Catalog")
+# MAGIC %md
+# MAGIC ### Unity Catalog Tables 
+# MAGIC
+# MAGIC - A unity catalog table is a table that is registered and goverened through unity catalog 
+# MAGIC - We can query using SQL and Pyspark 
+# MAGIC - Unity catalog manages the table metadata and access permissions
+# MAGIC - Delta Lake provides transactional capabilities we have already seen it
+# MAGIC - MERGE , UPDATE, INSERT DELETE
+# MAGIC
+
+# COMMAND ----------
+
+dbutils.widgets.text("catalog", "dataxdevelopment_1", "Unity Catalog")
 catalog = dbutils.widgets.get("catalog")
 if not catalog:
     raise ValueError("Parameter 'catalog' is required")
@@ -36,59 +38,102 @@ print(f"Using catalog: {catalog}")
 
 # COMMAND ----------
 
-# DBTITLE 1,Creating Unity Catalog Delta Table
-orders_path=f"/Volumes/{catalog}/bronze/orders_files"
+orders_path= f"/Volumes/{catalog}/default/datax/orders.csv"
+print(orders_path)
 
 # COMMAND ----------
 
-from pyspark.sql.types import ( StructType, StructField, IntegerType, StringType,  DateType, DecimalType)
+# DBTITLE 1,Defining the Schema Structure
+from pyspark.sql.types import (    StructType, StructField,    IntegerType, StringType,    DateType, DecimalType)
 
-orders_schema=StructType([    StructField("order_id", IntegerType()),    
-                          StructField("customer_id", StringType()),   
+orders_schema = StructType([    StructField("order_id", IntegerType()),    
+                           StructField("customer_id", StringType()),    
                            StructField("product_id", StringType()),    
                            StructField("order_date", DateType()),    
                            StructField("quantity", IntegerType()),    
                            StructField("unit_price", DecimalType(10, 2)),    
                            StructField("order_status", StringType())])
 
-orders_df=spark.read.option("header","true").schema(orders_schema).csv(orders_path)
+
+
+# COMMAND ----------
+
+orders_df = spark.read   .option("header", "true").schema(orders_schema).csv(orders_path)
 display(orders_df)
 
 # COMMAND ----------
 
-orders_df.write.format('delta').mode("overwrite").saveAsTable("bronze.orders_csv")
+orders_df.write.format("delta").mode("overwrite").saveAsTable('bronze.orders_csv')
 
 # COMMAND ----------
 
-# MAGIC %sql 
-# MAGIC DESCRIBE DETAIL bronze.orders_csv
+# MAGIC %sql
+# MAGIC Select * from bronze.orders_csv
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC Describe detail bronze.orders_csv
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC Select * from bronze.orders_csv order by order_id desc
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **WHAT IS VIEW**
+# MAGIC # UNITY Catalog Views
 # MAGIC
-# MAGIC - View is a saved SQL Query that presents data from one or more tables.
-# MAGIC - A Standard View doent sotre a sepreate copy of your query result.
-# MAGIC - WHenever we query it, Databricks executes the underlying query.
-# MAGIC - Views are useful for reusable business logic and controlled access of data.
+# MAGIC - A view is a saved SQL Query that presentws data from one or more tables 
+# MAGIC - A standard view doesnt store a sperate copy of the query result 
+# MAGIC - Whenever we execute or query it , then the underlying quey is executed and you see the result
+# MAGIC - Views are useful for reuabale busienss logic and controlled access of the data
+# MAGIC
 
 # COMMAND ----------
 
-# DBTITLE 1,Create a View Practically
 # MAGIC %sql
-# MAGIC CREATE OR REPLACE VIEW bronze.vw_orders_csv AS
-# MAGIC SELECT 
-# MAGIC
+# MAGIC CREATE SCHEMA IF NOT EXISTS GOLD
+
+# COMMAND ----------
+
+# DBTITLE 1,Create View on orders_csv
+# MAGIC %sql
+# MAGIC CREATE OR REPLACE VIEW GOLD.vw_orders_completed as
+# MAGIC Select 
 # MAGIC order_id,
 # MAGIC customer_id,
 # MAGIC product_id,
-# MAGIC order_date,
-# MAGIC quantity,
+# MAGIC order_date, 
+# MAGIC quantity, 
 # MAGIC unit_price,
-# MAGIC order_status,
-# MAGIC quantity*unit_price as ORDER_AMOUNT
-# MAGIC
-# MAGIC FROM bronze.orders_csv
-# MAGIC WHERE order_status='COMPLETED'
+# MAGIC quantity*unit_price as Total_Amount
+# MAGIC from bronze.orders_csv Where order_status='COMPLETED'
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC Select * from GOLD.vw_orders_completed
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC # USING COMMAND GRAND REVOKE ACCESS ON UNITY CATALOG
+
+# COMMAND ----------
+
+# MAGIC %sql 
+# MAGIC SHOW GRANTS ON CATALOG ${catalog}
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC GRANT USE SCHEMA 
+# MAGIC ON SCHEMA ${catalog}.gold
+# MAGIC TO `account users`
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC
